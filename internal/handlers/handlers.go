@@ -16,7 +16,25 @@ import (
 
 const JSONPlaceholderURL = "https://jsonplaceholder.typicode.com"
 
-// GetRequests - GET /api/requests with filtering, sorting, and search
+// GetRequests godoc
+// @Summary Get all API requests
+// @Description Get list of API requests with optional filtering and sorting
+// @Tags requests
+// @Accept json
+// @Produce json
+// @Param method query string false "Filter by HTTP method (GET, POST, PUT, DELETE)"
+// @Param response_code query int false "Filter by exact response code"
+// @Param min_response_code query int false "Minimum response code"
+// @Param max_response_code query int false "Maximum response code"
+// @Param min_response_time query int false "Minimum response time in ms"
+// @Param max_response_time query int false "Maximum response time in ms"
+// @Param start_date query string false "Filter by start date (RFC3339 format)"
+// @Param end_date query string false "Filter by end date (RFC3339 format)"
+// @Param search query string false "Search in path"
+// @Param sort_by query string false "Sort by field (created_at, response_time)"
+// @Param order query string false "Sort order (asc, desc)"
+// @Success 200 {array} models.APIRequest
+// @Router /api/requests [get]
 func GetRequests(w http.ResponseWriter, r *http.Request) {
 	query := "SELECT id, method, path, response_code, response_time, response_body, created_at FROM api_requests WHERE 1=1"
 	args := []interface{}{}
@@ -122,7 +140,18 @@ func GetRequests(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(requests)
 }
 
-// GetProblems - GET /api/problems with filtering and sorting
+// GetProblems godoc
+// @Summary Get all API problems
+// @Description Get list of detected API problems with optional filtering
+// @Tags problems
+// @Accept json
+// @Produce json
+// @Param problem_type query string false "Filter by problem type"
+// @Param severity query string false "Filter by severity"
+// @Param sort_by query string false "Sort by field"
+// @Param order query string false "Sort order"
+// @Success 200 {array} models.Problem
+// @Router /api/problems [get]
 func GetProblems(w http.ResponseWriter, r *http.Request) {
 	query := "SELECT id, request_id, problem_type, severity, description, created_at FROM problems WHERE 1=1"
 	args := []interface{}{}
@@ -185,7 +214,18 @@ func GetProblems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(problems)
 }
 
-// ProxyRequest - Proxy requests to JSONPlaceholder and log them
+// ProxyRequest godoc
+// @Summary Proxy request to JSONPlaceholder
+// @Description Proxy API request through backend and log it
+// @Tags proxy
+// @Accept json
+// @Produce json
+// @Param endpoint path string true "API endpoint to proxy"
+// @Success 200 {object} map[string]interface{}
+// @Router /api/proxy/{endpoint} [get]
+// @Router /api/proxy/{endpoint} [post]
+// @Router /api/proxy/{endpoint} [put]
+// @Router /api/proxy/{endpoint} [delete]
 func ProxyRequest(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	endpoint := vars["endpoint"]

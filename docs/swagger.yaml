@@ -1,0 +1,231 @@
+basePath: /
+definitions:
+  models.APIRequest:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      method:
+        type: string
+      path:
+        type: string
+      response_body:
+        type: string
+      response_code:
+        type: integer
+      response_time:
+        type: integer
+    type: object
+  models.Problem:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      problem_type:
+        type: string
+      request_id:
+        type: integer
+      severity:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@apimonitor.com
+    name: API Support
+  description: Backend API for monitoring and analyzing API requests
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: API Monitor Backend
+  version: "1.0"
+paths:
+  /api/problems:
+    get:
+      consumes:
+      - application/json
+      description: Get list of detected API problems with optional filtering
+      parameters:
+      - description: Filter by problem type
+        in: query
+        name: problem_type
+        type: string
+      - description: Filter by severity
+        in: query
+        name: severity
+        type: string
+      - description: Sort by field
+        in: query
+        name: sort_by
+        type: string
+      - description: Sort order
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Problem'
+            type: array
+      summary: Get all API problems
+      tags:
+      - problems
+  /api/proxy/{endpoint}:
+    delete:
+      consumes:
+      - application/json
+      description: Proxy API request through backend and log it
+      parameters:
+      - description: API endpoint to proxy
+        in: path
+        name: endpoint
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Proxy request to JSONPlaceholder
+      tags:
+      - proxy
+    get:
+      consumes:
+      - application/json
+      description: Proxy API request through backend and log it
+      parameters:
+      - description: API endpoint to proxy
+        in: path
+        name: endpoint
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Proxy request to JSONPlaceholder
+      tags:
+      - proxy
+    post:
+      consumes:
+      - application/json
+      description: Proxy API request through backend and log it
+      parameters:
+      - description: API endpoint to proxy
+        in: path
+        name: endpoint
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Proxy request to JSONPlaceholder
+      tags:
+      - proxy
+    put:
+      consumes:
+      - application/json
+      description: Proxy API request through backend and log it
+      parameters:
+      - description: API endpoint to proxy
+        in: path
+        name: endpoint
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Proxy request to JSONPlaceholder
+      tags:
+      - proxy
+  /api/requests:
+    get:
+      consumes:
+      - application/json
+      description: Get list of API requests with optional filtering and sorting
+      parameters:
+      - description: Filter by HTTP method (GET, POST, PUT, DELETE)
+        in: query
+        name: method
+        type: string
+      - description: Filter by exact response code
+        in: query
+        name: response_code
+        type: integer
+      - description: Minimum response code
+        in: query
+        name: min_response_code
+        type: integer
+      - description: Maximum response code
+        in: query
+        name: max_response_code
+        type: integer
+      - description: Minimum response time in ms
+        in: query
+        name: min_response_time
+        type: integer
+      - description: Maximum response time in ms
+        in: query
+        name: max_response_time
+        type: integer
+      - description: Filter by start date (RFC3339 format)
+        in: query
+        name: start_date
+        type: string
+      - description: Filter by end date (RFC3339 format)
+        in: query
+        name: end_date
+        type: string
+      - description: Search in path
+        in: query
+        name: search
+        type: string
+      - description: Sort by field (created_at, response_time)
+        in: query
+        name: sort_by
+        type: string
+      - description: Sort order (asc, desc)
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.APIRequest'
+            type: array
+      summary: Get all API requests
+      tags:
+      - requests
+schemes:
+- http
+swagger: "2.0"
