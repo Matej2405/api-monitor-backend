@@ -28,6 +28,24 @@ func GetRequests(w http.ResponseWriter, r *http.Request) {
 		args = append(args, method)
 		argCount++
 	}
+	// Filter by response code
+	if responseCode := r.URL.Query().Get("response_code"); responseCode != "" {
+		query += fmt.Sprintf(" AND response_code = $%d", argCount)
+		args = append(args, responseCode)
+		argCount++
+	}
+
+	// Filter by response code range (for 2xx, 4xx, 5xx filtering)
+	if minCode := r.URL.Query().Get("min_response_code"); minCode != "" {
+		query += fmt.Sprintf(" AND response_code >= $%d", argCount)
+		args = append(args, minCode)
+		argCount++
+	}
+	if maxCode := r.URL.Query().Get("max_response_code"); maxCode != "" {
+		query += fmt.Sprintf(" AND response_code <= $%d", argCount)
+		args = append(args, maxCode)
+		argCount++
+	}
 
 	// Filter by response time range
 	if minTime := r.URL.Query().Get("min_response_time"); minTime != "" {
