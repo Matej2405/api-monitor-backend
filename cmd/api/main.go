@@ -49,7 +49,7 @@ func main() {
 		AllowedOrigins:   []string{"*"}, // Vite default port
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"*"},
-		AllowCredentials: true,
+		AllowCredentials: false,
 	})
 
 	handler := c.Handler(router)
