@@ -15,7 +15,7 @@
 package main
 
 import (
-	_ "api-monitor-backend/docs" // Import generated docs
+	//_ "api-monitor-backend/docs" // Import generated docs
 	"api-monitor-backend/internal/database"
 	"api-monitor-backend/internal/handlers"
 	"log"
